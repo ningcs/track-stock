@@ -12,10 +12,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: ningcs
@@ -190,7 +188,7 @@ public class StockimageUtils {
 //        dealData(list);
     }
 
-    public static void dealData(List<OptionRespList> list) {
+    public static void dealData(List<OptionRespList> list,Integer amount) {
         int imageWidth = 2000;// 图片的宽度
 
         int size = list.size();
@@ -214,7 +212,11 @@ public class StockimageUtils {
         int wigth = 0;
         graphics.setFont(new Font("宋体", Font.BOLD, 50));
         graphics.drawString("期权异常跟踪(" + LocalDate.now().plusDays(-1) + ")", 600, high);
+        graphics.setFont(new Font("宋体", Font.PLAIN, 30));
+        graphics.setColor(new Color(255, 28, 26));
+        graphics.drawString("注：统计交易金额大于"+amount+"万美元", 1350, high);
         graphics.setFont(new Font("宋体", Font.BOLD, 30));
+        graphics.setColor(Color.black);
         high += 20;
         graphics.drawLine(50, high, 1750, high);
         high += 20;
@@ -235,7 +237,8 @@ public class StockimageUtils {
                     Method setmethod = optionResp.getClass().getMethod("get" + method);// 获取 get 方法
                     String value = (String) setmethod.invoke(optionResp);// 通过 get 获取值
                     if (optionResp.isDesc()) {
-                        graphics.setFont(new Font("黑体", Font.BOLD, 40));
+
+                        graphics.setFont(new Font("黑体", Font.BOLD, 50));
                         graphics.drawString(value, wigth, high);
                         graphics.setFont(new Font("宋体", Font.BOLD, 30));
                     } else {
@@ -250,12 +253,12 @@ public class StockimageUtils {
                         } else {
                             graphics.setColor(Color.black);
                         }
-                        if (name.toLowerCase().equals("type")) {
-                            optionResp.setSize(optionResp.getSize()+"w美元");
+                        if (name.toLowerCase().equals("size")) {
+                            value=value+"w";
                         }
                         graphics.drawString(value, wigth, high);
                     }
-                    wigth += 200;
+                    wigth += 220;
 
 //                    System.out.println(value);
                 } catch (NoSuchMethodException e) {
@@ -274,15 +277,31 @@ public class StockimageUtils {
         high+=50;
         graphics.setColor(new Color(255, 28, 26));
         graphics.setFont(new Font("宋体", Font.BOLD, 30));
-        graphics.drawString("注：数据来源traceoption官方网站", 100, high);
-        high+=50;
-        graphics.drawString("注：以上只统计交易金额大于50w期权异动", 100, high);
+        graphics.drawString("注：以上数据出自公众号：美股发掘，转载请标明出处", 100, high);
         high+=50;
         graphics.drawString("注：关注公众号：美股发掘,和我一起发掘美股成长股", 100, high);
         high+=50;
+        graphics.drawString("注：以上数据仅提供交流学习，不作为投资意见", 100, high);
 
-        createImage("D:\\image\\"+LocalDate.now().plusDays(-1)+".png", image);
+        createImage("D:\\image\\trace\\"+LocalDate.now().plusDays(-1)+"-"+amount+".png", image);
 
     }
 
+    /**
+     * 随机获得6位小数
+     *
+     * @param number
+     * @return
+     */
+    private static String getRandom(int number) {
+        Random random = new Random();
+        String result = "";
+        for (
+                int i = 0;
+                i < 6; i++) {
+            result += random.nextInt(number);
+        }
+        System.out.println(result);
+        return result;
+    }
 }

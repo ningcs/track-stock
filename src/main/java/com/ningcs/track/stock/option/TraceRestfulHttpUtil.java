@@ -24,11 +24,11 @@ public class TraceRestfulHttpUtil {
 
     public static String token ="eyJ1aWQiOjM5ODUsInNhbHQiOiIwLjg4NTA4MjQzMDEzMzU0MTYiLCJleHBpcmVzIjoxNjIzNTcwNTMyLjE4ODE1Njh9G9MJ8TJvqPoTVlMJu_3xcg==";
 
+    public static Integer count =1;
     /**
      * 向指定URL发起Get请求，参数为params
      *
      * @param url
-     * @param params
      * @return
      */
     public static String sendGet(String url) throws Exception, IOException {
@@ -40,6 +40,7 @@ public class TraceRestfulHttpUtil {
 //            System.out.println("***************请求参数*******************");
 //            System.out.println("param:" + url);
 //            System.out.println("***************请求参数*******************");
+            Thread.sleep((count=count+1));
             HttpURLConnection conn = getConnObject(url, "GET"); //根据请求方式和url获得相应的conn对象
             if (conn == null) {
                 logger.error("url处理异常！");
