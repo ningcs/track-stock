@@ -54,7 +54,7 @@ public class TrackOptionUtil {
 
 
     //传统股票
-    public static String traditionalchinesePools = "ba,spg,wynn";
+    public static String traditionalchinesePools = "ba,spg,wynn,aal";
 
 
     static StringBuilder stringBuilder = new StringBuilder();
@@ -147,6 +147,7 @@ public class TrackOptionUtil {
         map.put("spg", "西蒙地产");
         map.put("wynn", "永利度假村");
         map.put("cost", "好市多");
+        map.put("aal", "美国航空");
 
         return map;
     }
@@ -210,8 +211,8 @@ public class TrackOptionUtil {
     //追踪期权
     public static void traceOption(TreeMap<String, String> map ) throws Exception{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_from = simpleDateFormat.parse("2021-05-18");
-        Date date_to = simpleDateFormat.parse("2021-05-19");
+        Date date_from = simpleDateFormat.parse("2021-05-17");
+        Date date_to = simpleDateFormat.parse("2021-05-24");
 
 
         List<CalculateStock> calculateStocks = new ArrayList<>();
@@ -308,14 +309,14 @@ public class TrackOptionUtil {
         calculateStocks.forEach(calculateStock1 -> {
 
             if (Math.abs(calculateStock1.getCallCount() - calculateStock1.getPutCount()) <= 1) {
-                middle.append(calculateStock1.getSymbolName()).append(",");
+                middle.append(calculateStock1.getSymbol()).append(",");
                 return;
             }
 
             if (calculateStock1.getCallCount() > calculateStock1.getPutCount()) {
-                stringBuilderCall.append(calculateStock1.getSymbolName()).append(",");
+                stringBuilderCall.append(calculateStock1.getSymbol()).append(",");
             } else {
-                stringBuilderput.append(calculateStock1.getSymbolName()).append(",");
+                stringBuilderput.append(calculateStock1.getSymbol()).append(",");
             }
 
         });
