@@ -288,10 +288,7 @@ public class StockimageUtils {
             graphics.drawString(hashMap.get("call"), 100, high);
             high+=50;
         }
-        if (StringUtils.isNotBlank(hashMap.get("middle"))){
-            graphics.drawString(hashMap.get("middle"), 100, high);
-            high+=50;
-        }
+
         if (StringUtils.isNotBlank(hashMap.get("put"))){
             graphics.drawString(hashMap.get("put"), 100, high);
             high+=50;

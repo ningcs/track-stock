@@ -5,7 +5,6 @@ import com.ningcs.track.stock.job.TrackARKJob;
 import com.ningcs.track.stock.model.Content;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
-import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
