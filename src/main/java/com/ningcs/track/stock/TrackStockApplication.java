@@ -2,8 +2,10 @@ package com.ningcs.track.stock;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class TrackStockApplication {
 
     public static void main(String[] args) {

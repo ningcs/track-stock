@@ -50,7 +50,7 @@ public class TrackOptionUtil {
 
 
     //中概股
-    public static String chipchinesePools = "bidu,futu,bili";
+    public static String chipchinesePools = "bidu,futu,bili,beke";
 
 
     //传统股票
@@ -136,6 +136,7 @@ public class TrackOptionUtil {
         map.put("bidu", "百度");
         map.put("futu", "富途");
         map.put("bili", "B站");
+        map.put("beke", "中概股");
 
         //数字货币（比特币概念）
         map.put("sq", "Square");
@@ -211,8 +212,8 @@ public class TrackOptionUtil {
     //追踪期权
     public static void traceOption(TreeMap<String, String> map ) throws Exception{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_from = simpleDateFormat.parse("2021-05-17");
-        Date date_to = simpleDateFormat.parse("2021-05-24");
+        Date date_from = simpleDateFormat.parse("2021-05-26");
+        Date date_to = simpleDateFormat.parse("2021-05-30");
 
 
         List<CalculateStock> calculateStocks = new ArrayList<>();
@@ -281,7 +282,7 @@ public class TrackOptionUtil {
 
                             }
 
-                            //记录大于20w
+                            //记录大于100w
                             if (Integer.parseInt(optionResp1.getSize()) > 20) {
                                 if (optionResp.getType() == 1) {
                                     calculateStock.setCallCount(calculateStock.getCallCount() + 1);
@@ -309,30 +310,32 @@ public class TrackOptionUtil {
         calculateStocks.forEach(calculateStock1 -> {
 
             if (Math.abs(calculateStock1.getCallCount() - calculateStock1.getPutCount()) <= 1) {
-                middle.append(calculateStock1.getSymbol()).append(",");
+                middle.append(calculateStock1.getSymbolName()).append(",");
                 return;
             }
 
             if (calculateStock1.getCallCount() > calculateStock1.getPutCount()) {
-                stringBuilderCall.append(calculateStock1.getSymbol()).append(",");
+                stringBuilderCall.append(calculateStock1.getSymbolName()).append(",");
             } else {
-                stringBuilderput.append(calculateStock1.getSymbol()).append(",");
+                stringBuilderput.append(calculateStock1.getSymbolName()).append(",");
             }
 
         });
         System.out.println("总结：");
-
+        HashMap<String , String> hashMap = new HashMap<>();
         if (StringUtils.isNotBlank(stringBuilderCall)) {
             System.out.println("今日机构期权做多的股票：" + stringBuilderCall.toString());
+            hashMap.put("call","今日机构期权做多的股票：" + stringBuilderCall.toString());
         }
         if (StringUtils.isNotBlank(middle)) {
             System.out.println("今日期权多头和空头博弈的股票：" + middle.toString());
+            hashMap.put("middle","今日期权多头和空头博弈的股票：" + middle.toString());
         }
         if (StringUtils.isNotBlank(stringBuilderput)) {
             System.out.println("今日机构期权做空的股票：" + stringBuilderput.toString());
+            hashMap.put("put","今日机构期权做空的股票：" + stringBuilderput.toString());
         }
         System.out.println("更多有价值的信息，请关注公众号：美股发掘。我会定期跟踪股票池相关股票的期权异动，和大家一起交流学习，不作为投资意见。");
-        System.out.println("");
 
         List<OptionRespList> respLists = optionRespLists.stream()
                 .filter(a -> !a.isDesc())
@@ -350,7 +353,7 @@ public class TrackOptionUtil {
         optionRespLists.add(respList);
 
         respLists.add(0,respList);
-        StockimageUtils.dealData(respLists,20);
+        StockimageUtils.dealData(respLists,20,hashMap);
 
 
         List<OptionRespList> respLists1 = optionRespLists.stream()
@@ -358,7 +361,7 @@ public class TrackOptionUtil {
                 .filter(a -> Integer.parseInt(a.getSize()) > 100)
                 .collect(Collectors.toList());
         respLists1.add(0,respList);
-        StockimageUtils.dealData(respLists1,100);
+        StockimageUtils.dealData(respLists1,100,hashMap);
 
     }
 
