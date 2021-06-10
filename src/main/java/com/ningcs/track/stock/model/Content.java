@@ -2,9 +2,6 @@ package com.ningcs.track.stock.model;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * @Auther: ningcs
  * @Date: 2021/04/19/17:15
@@ -18,6 +15,10 @@ public class Content {
      */
     private String fund;
 
+    /**
+     * 日期
+     */
+    private String date;
 
     /**
      * 操作名称买/卖

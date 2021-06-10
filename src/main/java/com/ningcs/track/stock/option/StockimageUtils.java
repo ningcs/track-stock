@@ -1,6 +1,7 @@
 package com.ningcs.track.stock.option;
 
 import com.ningcs.track.stock.model.Content;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -188,12 +189,14 @@ public class StockimageUtils {
 //        dealData(list);
     }
 
-    public static void dealData(List<OptionRespList> list,Integer amount) {
+    public static void dealData(List<OptionRespList> list,
+                                Integer amount,
+                                HashMap<String , String> hashMap) {
         int imageWidth = 2000;// 图片的宽度
 
         int size = list.size();
 
-        int imageHeight = 70*size;// 图片的高度
+        int imageHeight = 80*size;// 图片的高度
 
         BufferedImage image = new BufferedImage(imageWidth, imageHeight,
                 BufferedImage.TYPE_INT_RGB);
@@ -272,8 +275,28 @@ public class StockimageUtils {
         }
         graphics.setColor(Color.black);
         high += 30;
-        graphics.drawLine(50, high, 1550, high);
+        graphics.drawLine(50, high, 1850, high);
+        high+=50;
+        graphics.setColor(new Color(255, 28, 26));
+        graphics.setFont(new Font("宋体", Font.BOLD, 50));
+        high+=30;
+        graphics.setColor(Color.black);
+        graphics.drawString("结 论：", 100, high);
+        high+=50;
+        graphics.setColor(new Color(255, 28, 26));
+        if (StringUtils.isNotBlank(hashMap.get("call"))){
+            graphics.drawString(hashMap.get("call"), 100, high);
+            high+=50;
+        }
 
+        if (StringUtils.isNotBlank(hashMap.get("put"))){
+            graphics.drawString(hashMap.get("put"), 100, high);
+            high+=50;
+        }
+
+        graphics.setColor(Color.black);
+        high += 30;
+        graphics.drawLine(50, high, 1850, high);
         high+=50;
         graphics.setColor(new Color(255, 28, 26));
         graphics.setFont(new Font("宋体", Font.BOLD, 30));

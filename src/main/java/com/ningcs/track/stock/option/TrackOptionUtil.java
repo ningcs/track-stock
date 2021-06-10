@@ -50,12 +50,14 @@ public class TrackOptionUtil {
 
 
     //中概股
-    public static String chipchinesePools = "bidu,futu,bili";
+    public static String chipchinesePools = "bidu,futu,bili,beke";
 
 
     //传统股票
-    public static String traditionalchinesePools = "ba,spg,wynn,aal";
+    public static String traditionalchinesePools = "ba,spg,wynn,aal,ccl,rcl,mro,expe,vac,ads,cc";
 
+    //基建
+    public static String popularPools = "x,fcx,cat,uri,aqua,nsc,sum,aa";
 
     static StringBuilder stringBuilder = new StringBuilder();
 
@@ -69,6 +71,7 @@ public class TrackOptionUtil {
             .append(socialchinesePools).append(",")
             .append(btcchinesePools).append(",")
             .append(traditionalchinesePools).append(",")
+            .append(popularPools).append(",")
             .toString();
 
     public static TreeMap<String, String> Init() {
@@ -95,16 +98,16 @@ public class TrackOptionUtil {
 
         //电商
         map.put("amzn", "亚马逊");
-        map.put("shop", "Shopify");
+        map.put("shop", "Shop");
         map.put("baba", "阿里巴巴");
         map.put("jd", "京东");
         map.put("pdd", "拼多多");
-        map.put("se", "Sea Limited");
+        map.put("se", "Se");
         map.put("ebay", "eBay");
         map.put("meli", "美卡多");
         map.put("wish", "Wish");
         map.put("etsy", "Etsy");
-        map.put("etsy", "Rvlv");
+        map.put("rvlv", "Rvlv");
 
         //流媒体
         map.put("nflx", "奈飞");
@@ -114,8 +117,8 @@ public class TrackOptionUtil {
 
         //社交股
         map.put("fb", "Facebook");
-        map.put("snap", "Snapchat");
-        map.put("pins", "Pinterest");
+        map.put("snap", "Snap");
+        map.put("pins", "Pins");
         map.put("twtr", "推特");
 
 
@@ -136,11 +139,12 @@ public class TrackOptionUtil {
         map.put("bidu", "百度");
         map.put("futu", "富途");
         map.put("bili", "B站");
+        map.put("beke", "贝壳");
 
         //数字货币（比特币概念）
-        map.put("sq", "Square");
+        map.put("sq", "Sq");
         map.put("pypl", "PayPal");
-        map.put("coin", "coinbase");
+        map.put("coin", "Coin");
 
         //传统股票
         map.put("ba", "波音");
@@ -148,6 +152,24 @@ public class TrackOptionUtil {
         map.put("wynn", "永利度假村");
         map.put("cost", "好市多");
         map.put("aal", "美国航空");
+        map.put("ccl", "嘉年华");
+        map.put("rcl", "皇家");
+        map.put("mro", "mro");
+        map.put("expe", "expe");
+        map.put("vac", "万豪度假");
+        map.put("ads", "联合数据");
+        map.put("cc", "Cc");
+
+
+        //基建
+        map.put("x", "美国钢铁");
+        map.put("fcx", "麦克莫铜金");
+        map.put("cat", "Cat");
+        map.put("uri", "Uri");
+        map.put("aqua", "Aqua");
+        map.put("nsc", "Nsc");
+        map.put("sum", "Sum");
+        map.put("aa", "美国铝业");
 
         return map;
     }
@@ -203,6 +225,10 @@ public class TrackOptionUtil {
         List<String> collect9 = Arrays.asList(traditionalchinesePools.split(",")).stream().map(a -> map.get(a)).collect(Collectors.toList());
         System.out.println(String.join(",", collect9));
 
+        System.out.println("基建:");
+        List<String> collect10 = Arrays.asList(popularPools.split(",")).stream().map(a -> map.get(a)).collect(Collectors.toList());
+        System.out.println(String.join(",", collect10));
+
 
         //处理期权异动
         traceOption(map);
@@ -211,9 +237,8 @@ public class TrackOptionUtil {
     //追踪期权
     public static void traceOption(TreeMap<String, String> map ) throws Exception{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_from = simpleDateFormat.parse("2021-05-17");
-        Date date_to = simpleDateFormat.parse("2021-05-24");
-
+        Date date_from = simpleDateFormat.parse("2021-06-08");
+        Date date_to = simpleDateFormat.parse("2021-06-12");
 
         List<CalculateStock> calculateStocks = new ArrayList<>();
         List<OptionRespList> optionRespLists = new ArrayList<>();
@@ -265,8 +290,8 @@ public class TrackOptionUtil {
                             optionResp1.setReceived(result1);
                             optionRespLists.add(optionResp1);
 
-                            //只统计100w大单
-                            if (Integer.parseInt(optionResp1.getSize()) > 100) {
+                            //只统计50w大单
+                            if (Integer.parseInt(optionResp1.getSize()) > 50) {
                                 String typeName;
                                 if (optionResp.getType() == 1) {
                                     typeName = "看涨（call）";
@@ -281,8 +306,8 @@ public class TrackOptionUtil {
 
                             }
 
-                            //记录大于20w
-                            if (Integer.parseInt(optionResp1.getSize()) > 20) {
+                            //记录大于50w
+                            if (Integer.parseInt(optionResp1.getSize()) > 50) {
                                 if (optionResp.getType() == 1) {
                                     calculateStock.setCallCount(calculateStock.getCallCount() + 1);
                                 } else {
@@ -321,15 +346,18 @@ public class TrackOptionUtil {
 
         });
         System.out.println("总结：");
-
+        HashMap<String , String> hashMap = new HashMap<>();
         if (StringUtils.isNotBlank(stringBuilderCall)) {
             System.out.println("今日机构期权做多的股票：" + stringBuilderCall.toString());
+            hashMap.put("call","今日机构期权做多的股票：" + stringBuilderCall.toString());
         }
         if (StringUtils.isNotBlank(middle)) {
             System.out.println("今日期权多头和空头博弈的股票：" + middle.toString());
+            hashMap.put("middle","今日期权多头和空头博弈的股票：" + middle.toString());
         }
         if (StringUtils.isNotBlank(stringBuilderput)) {
             System.out.println("今日机构期权做空的股票：" + stringBuilderput.toString());
+            hashMap.put("put","今日机构期权做空的股票：" + stringBuilderput.toString());
         }
         System.out.println("更多有价值的信息，请关注公众号：美股发掘。我会定期跟踪股票池相关股票的期权异动，和大家一起交流学习，不作为投资意见。");
         System.out.println("");
@@ -350,15 +378,15 @@ public class TrackOptionUtil {
         optionRespLists.add(respList);
 
         respLists.add(0,respList);
-        StockimageUtils.dealData(respLists,20);
+        StockimageUtils.dealData(respLists,20,hashMap);
 
 
         List<OptionRespList> respLists1 = optionRespLists.stream()
                 .filter(a -> !a.isDesc())
-                .filter(a -> Integer.parseInt(a.getSize()) > 100)
+                .filter(a -> Integer.parseInt(a.getSize()) > 50)
                 .collect(Collectors.toList());
         respLists1.add(0,respList);
-        StockimageUtils.dealData(respLists1,100);
+        StockimageUtils.dealData(respLists1,50,hashMap);
 
     }
 

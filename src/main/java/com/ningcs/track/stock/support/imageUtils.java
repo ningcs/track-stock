@@ -1,32 +1,21 @@
 package com.ningcs.track.stock.support;
 
-import java.awt.geom.QuadCurve2D;
+import com.ningcs.track.stock.model.Content;
+import org.springframework.stereotype.Component;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import com.ningcs.track.stock.model.Content;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import org.springframework.stereotype.Component;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.BufferedOutputStream;
-
-import java.io.FileOutputStream;
-
-import java.util.List;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @Auther: ningcs
@@ -202,7 +191,7 @@ public class imageUtils {
     }
 
     public static void dealData(List<Content> list) {
-        int imageWidth = 1600;// 图片的宽度
+        int imageWidth = 1800;// 图片的宽度
 
         int size = list.size();
 
@@ -224,10 +213,10 @@ public class imageUtils {
         int high = 100;
         int wigth = 0;
         graphics.setFont(new Font("宋体", Font.BOLD, 50));
-        graphics.drawString("ARK基金持仓变化(" + LocalDate.now().plusDays(-1) + ")", 400, high);
+        graphics.drawString("ARK基金持仓变化(" + LocalDate.now().plusDays(-1) + ")", 500, high);
         graphics.setFont(new Font("宋体", Font.BOLD, 30));
         high += 20;
-        graphics.drawLine(50, high, 1550, high);
+        graphics.drawLine(50, high, 1750, high);
         high += 20;
 
         for (Content content3 : list) {
@@ -251,6 +240,7 @@ public class imageUtils {
                         graphics.setFont(new Font("宋体", Font.BOLD, 30));
                     } else {
                         graphics.setFont(new Font("宋体", Font.BOLD, 30));
+
                         //设置买入为红色，卖出为绿色
                         if (name.toLowerCase().equals("direction")) {
                             if (content3.getDirection().toLowerCase().equals("buy")) {
@@ -261,8 +251,8 @@ public class imageUtils {
                         } else {
                             graphics.setColor(Color.black);
                         }
-                        //持仓变化大于0.2%标红
-                        if (content3.getPercentage().compareTo("0.2") >= 0) {
+                        //持仓变化大于0.1%标红
+                        if (content3.getPercentage().compareTo("0.1") >= 0) {
                             if (content3.getDirection().toLowerCase().equals("buy")) {
                                 graphics.setColor(new Color(255, 28, 26));
                             } else {
@@ -285,14 +275,14 @@ public class imageUtils {
         }
         graphics.setColor(Color.black);
         high += 30;
-        graphics.drawLine(50, high, 1550, high);
+        graphics.drawLine(50, high, 1750, high);
 
         high+=50;
         graphics.setColor(new Color(255, 28, 26));
         graphics.setFont(new Font("宋体", Font.BOLD, 30));
         graphics.drawString("注：数据来源ARK基金官方网站", 50, high);
         high+=50;
-        graphics.drawString("注：持仓变化大于0.2%已标注，其中买入为红色，卖出为绿色", 50, high);
+        graphics.drawString("注：持仓变化大于0.1%已标注，其中买入为红色，卖出为绿色", 50, high);
         high+=50;
         graphics.drawString("注：基金买入股票金额按照股票盘后价计算", 50, high);
 

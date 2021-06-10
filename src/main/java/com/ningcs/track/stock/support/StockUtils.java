@@ -33,9 +33,6 @@ public class StockUtils {
 
     public static void main(String[] args) {
         getStocks(new HashSet<>(Arrays.asList("aapl", "tsla")));
-
-
-
     }
 
     public static Map<String, BigDecimal> getStocks(Set<String> stockNameList) {
