@@ -52,9 +52,8 @@ public class TrackOptionUtil {
     //中概股
     public static String chipchinesePools = "bidu,futu,bili,beke";
 
-
     //传统股票
-    public static String traditionalchinesePools = "ba,spg,wynn,aal,ccl,rcl,mro,expe,vac,ads,cc";
+    public static String traditionalchinesePools = "ba,spg,wynn,aal,ccl,rcl,mro,expe,vac,ads,cc,unh,duk";
 
     //基建
     public static String popularPools = "x,fcx,cat,uri,aqua,nsc,sum,aa";
@@ -159,6 +158,8 @@ public class TrackOptionUtil {
         map.put("vac", "万豪度假");
         map.put("ads", "联合数据");
         map.put("cc", "Cc");
+        map.put("unh", "联合健康");
+        map.put("duk", "杜克能源");
 
 
         //基建
