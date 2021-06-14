@@ -238,8 +238,8 @@ public class TrackOptionUtil {
     //追踪期权
     public static void traceOption(TreeMap<String, String> map ) throws Exception{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_from = simpleDateFormat.parse("2021-06-08");
-        Date date_to = simpleDateFormat.parse("2021-06-12");
+        Date date_from = simpleDateFormat.parse("2021-06-11");
+        Date date_to = simpleDateFormat.parse("2021-06-15");
 
         List<CalculateStock> calculateStocks = new ArrayList<>();
         List<OptionRespList> optionRespLists = new ArrayList<>();
@@ -333,6 +333,20 @@ public class TrackOptionUtil {
         StringBuilder stringBuilderput = new StringBuilder();
 
         calculateStocks.forEach(calculateStock1 -> {
+
+            if (calculateStock1.getCallCount() == 0 && calculateStock1.getPutCount() == 0){
+                return;
+            }
+
+            if (calculateStock1.getCallCount() == 0 && calculateStock1.getPutCount() > 0) {
+                stringBuilderput.append(calculateStock1.getSymbol()).append(",");
+                return;
+            }
+
+            if (calculateStock1.getPutCount() == 0 && calculateStock1.getCallCount() > 0) {
+                stringBuilderCall.append(calculateStock1.getSymbol()).append(",");
+                return;
+            }
 
             if (Math.abs(calculateStock1.getCallCount() - calculateStock1.getPutCount()) <= 1) {
                 middle.append(calculateStock1.getSymbol()).append(",");
